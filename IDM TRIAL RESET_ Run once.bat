@@ -4,7 +4,7 @@
 cd /d "%~dp0"
 
 : copying the bat file to IDM Folder
-Robocopy "%~dp0/IDM_Reg_clean_PrJ.bat" "C:\Program Files (x86)\Internet Download Manager"
+Robocopy "%~dp0/IDM Trial Reset Files/IDM_Reg_clean_PrJ.bat" "C:\Program Files (x86)\Internet Download Manager"
 
 : Adding the IDM trail reset bat file in task schedule to run it everytime the device is on
 
