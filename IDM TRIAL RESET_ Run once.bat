@@ -1,7 +1,13 @@
 : Runing bat with administrative privileges 
-@echo off
-%1 mshta vbscript:CreateObject("Shell.Application").ShellExecute("cmd.exe","/c %~s0 ::","","runas",1)(window.close)&&exit
-cd /d "%~dp0"
+
+NET SESSION
+IF %ERRORLEVEL% NEQ 0 GOTO ELEVATE
+GOTO ADMINTASKS
+
+:ELEVATE
+CD /d %~dp0
+MSHTA "javascript: var shell = new ActiveXObject('shell.application'); shell.ShellExecute('%~nx0', '', '', 'runas', 1);close();"
+
 :: Taking access permission 
 icacls "C:\Program Files (x86)\Internet Download Manager" /q /c /t /grant Everyone:F
 :: copying the bat file to IDM Folder
