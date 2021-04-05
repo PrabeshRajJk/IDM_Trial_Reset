@@ -2,19 +2,18 @@
 <Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
   <RegistrationInfo>
     <Date>2021-04-04T17:02:50.4167781</Date>
-    <Author>PRABESH\Prabesh</Author>
+    <Author>PRABESH</Author>
     <Description>This  will run a bat file daily reseting all the IDM registy</Description>
-    <URI>\IDM\IDM TRIAL RESET\IDM TRIAL RESET_ Task Schedule</URI>
+    <URI>\IDM\IDM TRIAL RESET_ Task Schedule_Daily</URI>
   </RegistrationInfo>
   <Triggers>
-    <BootTrigger>
+    <LogonTrigger>
       <Enabled>true</Enabled>
-    </BootTrigger>
+    </LogonTrigger>
   </Triggers>
   <Principals>
     <Principal id="Author">
-      <UserId>User</UserId>
-      <LogonType>InteractiveToken</LogonType>
+      <UserId>S-1-5-18</UserId>
       <RunLevel>HighestAvailable</RunLevel>
     </Principal>
   </Principals>
@@ -23,7 +22,7 @@
     <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
     <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>
     <AllowHardTerminate>true</AllowHardTerminate>
-    <StartWhenAvailable>false</StartWhenAvailable>
+    <StartWhenAvailable>true</StartWhenAvailable>
     <RunOnlyIfNetworkAvailable>false</RunOnlyIfNetworkAvailable>
     <IdleSettings>
       <StopOnIdleEnd>true</StopOnIdleEnd>
@@ -40,6 +39,7 @@
   <Actions Context="Author">
     <Exec>
       <Command>"C:\IDM_Trial Reset\IDM_Reg_clean__Trial Reset.bat"</Command>
+      <WorkingDirectory>C:\IDM_Trial Reset</WorkingDirectory>
     </Exec>
   </Actions>
 </Task>
