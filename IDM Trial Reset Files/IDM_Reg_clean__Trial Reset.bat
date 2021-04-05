@@ -1,14 +1,5 @@
-
 @ECHO ON
-
-NET SESSION
-IF %ERRORLEVEL% NEQ 0 GOTO ELEVATE
-GOTO ADMINTASKS
-
-:ELEVATE
-CD /d %~dp0
-MSHTA "javascript: var shell = new ActiveXObject('shell.application'); shell.ShellExecute('%~nx0', '', '', 'runas', 1);close();"
-
+REM  not admin prev required as the task schedule will  run the file with admin prev
 ::------------------------------------------------------------------------------------------------------------------------------------
 ::Process killing IDM
 ::------------------------------------------------------------------------------------------------------------------------------------
@@ -131,3 +122,5 @@ REG DELETE "HKCU\Software\DownloadManager" /v "scansk" /f
 Echo::
 Echo::============ IDM Trial Reset Success via Registry cleaning =======================
 Echo::
+
+EXIT
