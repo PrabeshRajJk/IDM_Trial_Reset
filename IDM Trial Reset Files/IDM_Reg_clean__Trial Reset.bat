@@ -90,6 +90,36 @@ for %%# in (
 ) do for /f "tokens=* delims=" %%A in ("%%#") do (
 set "reg=%%#" &CALL :DELETE
 )
+:DELETE
+
+REG DELETE %reg% /f %nul%
+
+if [%errorlevel%]==[0] (
+set "status=powershell write-host 'Deleted ' -fore '"Green"' -NoNewline; write-host '""%reg%""' -fore '"White"'"
+) else (
+set "status=echo Not found %reg%"
+)
+
+reg query %reg% %nul%
+
+if [%errorlevel%]==[0] (
+set "status=powershell write-host 'Deleted by taking ownership ' -fore '"Yellow"' -NoNewline; write-host '""%reg%""' -fore '"White"'"
+%nul% CALL :reg_takeownership "%reg%" "ReadPermissions, ReadKey" Allow %USER%
+%nul% CALL :reg_takeownership "%reg%" "SetValue, Delete" Deny S-1-5-32-544 S-1-5-18
+
+for /f "tokens=2 delims=:" %%s in ('sc showsid TrustedInstaller ^|findstr "S-1"') do set TI=%%s& call set TI=%%TI: =%%
+%nul% CALL :reg_takeownership "%reg%" FullControl Allow S-1-5-32-544 %TI%
+REG DELETE %reg% /f %nul%
+)
+
+reg query %reg% %nul%
+
+if [%errorlevel%]==[0] (
+powershell write-host 'Failed to delete ' -fore '"Red"' -NoNewline; write-host '""%reg%""' -fore '"White"'
+) else (
+%status%
+)
+Exit /b
 
 ::------------------------------------------------------------------------------------------------------------------------------------
 ::Reset Rot flags
