@@ -29,33 +29,41 @@ if '%errorlevel%' NEQ '0' (
     CD /D "%~dp0"
 :--------------------------------------    
 ::    <wirte YOUR BATCH SCRIPT BELOW HERE>
-cls
+Title  IDM Trial Reset by PRABESH
+
 @Echo copying the bat file to C:\IDM_Trial Reset
+
 Robocopy "%~dp0\IDM Trial Reset Files" "C:\IDM_Trial Reset" "IDM_Reg_clean__Trial Reset.bat"
 Robocopy "%~dp0\IDM Trial Reset Files" "C:\IDM_Trial Reset" "IDM TRIAL RESET_ Task Schedule.xml"
 :: trial reset Task Schedule
 
+@ECHO 
 ::  Taking Administrators group full control permission to the C:\WINDOWS\Tasks folder
 cd /d C:/windows
 CACLS TASKS /E /G builtin\administrators:F
 
 @Echo  Adding the IDM trail reset bat file in task schedule to run it everytime the device is started
 
+::-----------------------------------------------------------------------------------------------------------
 :: SCHTASKS /CREATE /SC ONSTART /TN "IDM Trial Reset\IDM Trial Reset" /TR "C:\IDM_Trial Reset\IDM_Reg_clean__Trial Reset.bat" 
 :: the above method created the schedule with low privilege thus use the one below 
+::THE NEW CODE IS 
+:: SCHTASKS /create /xml "C:\IDM_Trial Reset\IDM TRIAL RESET_ Task Schedule.xml" /tn "\IDM Trial Reset\IDM TRIAL RESET_ Task Schedule_ Run Daily"
+::
+:: IF THIS DOES NOT WORK DO IT MANUALLY
+:: control schedtasks
+:: @Echo check the IDM folder in task schedule
+:: # Echo if not present
+:: @Echo IMPORT  IDM TRIAL RESET_ Task Schedule.xml  
+:: @Echo from "C:\IDM_Trial Reset"
+:: Explorer "C:\IDM_Trial Reset"
+:: ----------------------------------------------------------------------------------------------------------
 
 SCHTASKS /create /xml "C:\IDM_Trial Reset\IDM TRIAL RESET_ Task Schedule.xml" /tn "\IDM Trial Reset\IDM TRIAL RESET_ Task Schedule_ Run Daily"
 
-control schedtasks
-@Echo check the IDM folder in task schedule
-# Echo if not present
-@Echo IMPORT  IDM TRIAL RESET_ Task Schedule.xml  
-@Echo from "C:\IDM_Trial Reset"
+DEL "%Temp%\*~DF*.TMP" /Q /S /F
 
-@pause 
-Explorer "C:\IDM_Trial Reset"
 :: wait for user approve
-
 @ Echo  !!!! WARNING !!!!
 @ Echo IDM will exit and any ongoing download will be stopped
 @ Echo If any ongoing download in IDM wait till it complete
@@ -69,5 +77,6 @@ Rem Your code goes here
 :: Running bat file to clean registry
 CALL "C:\IDM_Trial Reset\IDM_Reg_clean__Trial Reset.bat"
 
-:exiting  
+:exiting 
+DEL "%Temp%\*~DF*.TMP" /Q /S /F
 EXIT
