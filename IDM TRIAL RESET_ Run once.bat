@@ -30,7 +30,7 @@ if '%errorlevel%' NEQ '0' (
 :--------------------------------------    
 ::    <wirte YOUR BATCH SCRIPT BELOW HERE>
 
-:: copying the bat file to IDM Folder
+@Echo copying the bat file to C:\IDM_Trial Reset
 Robocopy "%~dp0\IDM Trial Reset Files" "C:\IDM_Trial Reset" "IDM_Reg_clean__Trial Reset.bat"
 Robocopy "%~dp0\IDM Trial Reset Files" "C:\IDM_Trial Reset" "IDM TRIAL RESET_ Task Schedule.xml"
 :: trial reset Task Schedule
@@ -41,7 +41,7 @@ CACLS TASKS /E /G builtin\administrators:F
 
 @Echo  Adding the IDM trail reset bat file in task schedule to run it everytime the device is started
 
-SCHTASKS /CREATE /SC ONSTART /TN "PRABESH\IDM Trial Reset\IDM Trial Reset" /TR "C:\IDM_Trial Reset\IDM_Reg_clean__Trial Reset.bat" 
+SCHTASKS /CREATE /SC ONSTART /TN "IDM Trial Reset\IDM Trial Reset" /TR "C:\IDM_Trial Reset\IDM_Reg_clean__Trial Reset.bat" 
 
 control schedtasks
 @Echo check the IDM folder in task schedule
