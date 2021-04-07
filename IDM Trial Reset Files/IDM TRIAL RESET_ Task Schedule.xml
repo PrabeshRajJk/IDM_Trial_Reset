@@ -3,8 +3,8 @@
   <RegistrationInfo>
     <Date>2020-04-04T17:02:50.4167781</Date>
     <Author>PRABESH</Author>
-    <Description>This  will run a bat file daily reseting all the IDM registy</Description>
-    <URI>\IDM\IDM TRIAL RESET_ Task Schedule_Daily</URI>
+    <Description>This  schedule task run "IDM_Reg_clean__Trial Reset.bat"  located in "C:\IDM_Trial Reset"  At log on of any user  reseting all the IDM registy.    Donot move or delete the file </Description>
+    <URI>\IDM Trial Reset\IDM TRIAL RESET_ Task Schedule_Daily</URI>
   </RegistrationInfo>
   <Triggers>
     <LogonTrigger>
