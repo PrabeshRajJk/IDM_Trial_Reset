@@ -1,36 +1,47 @@
-****************************************** CURRENT ISSUES ******************************************
-:: 
-:: ISSUES :: SCHTASKS   can not make the schedule task in some users
-:: Solution :: as per now 
-:: use    control schedtasks   to open the task schedule and import the .xml file 
-:: 
-:: 
-:: 
-:: ISSUES :: IDM x86 folder  can not  be accesses while using robocopy or x copy
-:: Solution :: as per now 
-:: use    any other folder  C:\
-:: 
-:: Runing bat with administrative privileges 
-:: ****************************************** Script begins from here ******************************************
+@echo off
 
-:: Runing with administrative privileges 
+:: BatchGotAdmin
+:-------------------------------------
+REM  --> Check for permissions
+    IF "%PROCESSOR_ARCHITECTURE%" EQU "amd64" (
+>nul 2>&1 "%SYSTEMROOT%\SysWOW64\cacls.exe" "%SYSTEMROOT%\SysWOW64\config\system"
+) ELSE (
+>nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
+)
 
-NET SESSION
-IF %ERRORLEVEL% NEQ 0 GOTO ELEVATE
-GOTO ADMINTASKS
+REM --> If error flag set, we do not have admin.
+if '%errorlevel%' NEQ '0' (
+    echo Requesting administrative privileges...
+    goto UACPrompt
+) else ( goto gotAdmin )
 
-:ELEVATE
-CD /d %~dp0
-MSHTA "javascript: var shell = new ActiveXObject('shell.application'); shell.ShellExecute('%~nx0', '', '', 'runas', 1);close();"
-cls
+:UACPrompt
+    echo Set UAC = CreateObject^("Shell.Application"^) > "%temp%\getadmin.vbs"
+    set params= %*
+    echo UAC.ShellExecute "cmd.exe", "/c ""%~s0"" %params:"=""%", "", "runas", 1 >> "%temp%\getadmin.vbs"
+
+    "%temp%\getadmin.vbs"
+    del "%temp%\getadmin.vbs"
+    exit /B
+
+:gotAdmin
+    pushd "%CD%"
+    CD /D "%~dp0"
+:--------------------------------------    
+::    <wirte YOUR BATCH SCRIPT BELOW HERE>
 
 :: copying the bat file to IDM Folder
 Robocopy "%~dp0\IDM Trial Reset Files" "C:\IDM_Trial Reset" "IDM_Reg_clean__Trial Reset.bat"
 Robocopy "%~dp0\IDM Trial Reset Files" "C:\IDM_Trial Reset" "IDM TRIAL RESET_ Task Schedule.xml"
 :: trial reset Task Schedule
+
+::  Taking Administrators group full control permission to the C:\WINDOWS\Tasks folder
+cd /d C:/windows
+CACLS TASKS /E /G builtin\administrators:F
+
 @Echo  Adding the IDM trail reset bat file in task schedule to run it everytime the device is started
 
-SCHTASKS /CREATE /SC ONSTART /TN "IDM\IDM Trial Reset" /TR "C:\IDM_Trial Reset\IDM_Reg_clean__Trial Reset.bat" 
+SCHTASKS /CREATE /SC ONSTART /TN "PRABESH\IDM Trial Reset\IDM Trial Reset" /TR "C:\IDM_Trial Reset\IDM_Reg_clean__Trial Reset.bat" 
 
 control schedtasks
 @Echo check the IDM folder in task schedule
