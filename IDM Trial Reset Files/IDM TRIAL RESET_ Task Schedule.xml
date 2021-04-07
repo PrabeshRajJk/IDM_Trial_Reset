@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-16"?>
 <Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
   <RegistrationInfo>
-    <Date>2020-04-04T17:02:50.4167781</Date>
+    <Date>2021-01-20T23:02:50.4167781</Date>
     <Author>PRABESH</Author>
     <Description>This  schedule task run "IDM_Reg_clean__Trial Reset.bat"  located in "C:\IDM_Trial Reset"  At log on of any user  reseting all the IDM registy.    Donot move or delete the file </Description>
     <URI>\IDM Trial Reset\IDM TRIAL RESET_ Task Schedule_Daily</URI>
