@@ -1,18 +1,9 @@
 @ECHO ON
 REM  not admin prev required as the task schedule will  run the file with admin prev
 Echo:
-::CALLScript
-CALL :ScriptKILLPROCESS
-CALL :ScriptREGCLEAN
-CALL :ScriptResetRotflags
-CALL :ScriptEND
-
-::
-:ScriptKILLPROCESS
 ::------------------------------------------------------------------------------------------------------------------------------------
 ::Process killing IDM
 ::------------------------------------------------------------------------------------------------------------------------------------
-Echo:
 taskkill /IM "IDMan.exe" /F
 taskkill /IM "IEMonitor.exe" /F
 taskkill /IM "IDMGrHlp.exe" /F
@@ -23,11 +14,6 @@ taskkill /IM "MediumILStart.exe" /F
 
 Echo:
 DEL "%Temp%\*~DF*.TMP" /Q /S /F
-
-Exit /b
-
-::
-:ScriptREGCLEAN
 ::------------------------------------------------------------------------------------------------------------------------------------
 ::Reg-entries cleaning
 ::------------------------------------------------------------------------------------------------------------------------------------
@@ -114,8 +100,6 @@ set "status=powershell write-host 'Deleted ' -fore '"Green"' -NoNewline; write-h
 ) else (
 set "status=echo Not found %reg%"
 )
-
-Exit /b
 ::
 :ScriptResetRotflags
 ::------------------------------------------------------------------------------------------------------------------------------------
@@ -145,8 +129,16 @@ REG DELETE "HKCU\Software\DownloadManager" /v "tvfrdt" /f
 REG DELETE "HKCU\Software\DownloadManager" /v "LstCheck" /f
 REG DELETE "HKCU\Software\DownloadManager" /v "scansk" /f
 
-:ScriptEND
-Echo::
+
+::------------------------------------------------------------------------------------------------------------------------------------
+::Restart IDM
+::------------------------------------------------------------------------------------------------------------------------------------
+timeout /T 9
+start "" "C:\Program Files (x86)\Internet Download Manager\idman.exe" --idman /s
+
+::------------------------------------------------------------------------------------------------------------------------------------
+::END
+::------------------------------------------------------------------------------------------------------------------------------------
 Echo:: IDM Trial Reset Success via Registry cleaning 
 Echo::      Success 
 
