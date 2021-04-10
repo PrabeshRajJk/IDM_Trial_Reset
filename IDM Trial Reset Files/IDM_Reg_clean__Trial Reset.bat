@@ -92,14 +92,8 @@ for %%# in (
 set "reg=%%#" &CALL :DELETE
 )
 :DELETE
-
 REG DELETE %reg% /f %nul%
 
-if [%errorlevel%]==[0] (
-set "status=powershell write-host 'Deleted ' -fore '"Green"' -NoNewline; write-host '""%reg%""' -fore '"White"'"
-) else (
-set "status=echo Not found %reg%"
-)
 ::
 :ScriptResetRotflags
 ::------------------------------------------------------------------------------------------------------------------------------------
