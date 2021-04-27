@@ -129,12 +129,17 @@ REG DELETE "HKCU\Software\DownloadManager" /v "scansk" /f
 ::------------------------------------------------------------------------------------------------------------------------------------
 timeout /T 9
 start "" "C:\Program Files (x86)\Internet Download Manager\idman.exe" --idman /s
-
+start "" "C:\Program Files (x86)\Internet Download Manager\IEMonitor.exe"
+start "" "C:\Program Files (x86)\Internet Download Manager\IDMGrHlp.exe"
+start "" "C:\Program Files (x86)\Internet Download Manager\idmBroker.exe"
+start "" "C:\Program Files (x86)\Internet Download Manager\IDMIntegrator64.exe"
+start "" "C:\Program Files (x86)\Internet Download Manager\IDMMsgHost.exe"
+start "" "C:\Program Files (x86)\Internet Download Manager\MediumILStart.exe"
 ::------------------------------------------------------------------------------------------------------------------------------------
 ::END
 ::------------------------------------------------------------------------------------------------------------------------------------
 Echo:: IDM Trial Reset Success via Registry cleaning 
-Echo::      Success 
+Echo      Success 
 
 EXIT
 @EXIT
